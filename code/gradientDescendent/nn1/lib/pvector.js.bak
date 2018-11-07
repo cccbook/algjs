@@ -1,0 +1,86 @@
+module.exports = class PVector {
+  constructor (p) {
+    this.p = p
+  }
+
+  add (p2) {
+    let p = new PVector()
+    for (let k in p2) {
+      p[k] = this.p[k] + p2[k]
+    }
+    return p
+  }
+
+  sub (p2) {
+    return this.add(p2.neg())
+  }
+
+  mul (c) {
+    let p = {}
+    for (let k in p1) {
+      p[k] = this.p[k] * c
+    }
+    return p
+  }
+
+  neg () {
+    return this.mul(-1)
+  }
+  
+  norm () {
+    let norm = 0
+    for (let k in p) {
+      norm += p[k] * p[k]
+    }
+    return norm
+  }
+  
+  str(len=4) {
+    let lines = []
+    for (let k in this.p) {
+      lines.push(k + ':' + this.p[k].toFixed(len))
+    }
+    return '{' + lines.join(', ') + '}'
+  }
+}
+/*
+pv.add = function (p1, p2) {
+  let p = {}
+  for (let k in p1) {
+    p[k] = p1[k] + p2[k]
+  }
+  return p
+}
+
+pv.sub = function (p1, p2) {
+  return pv.add(p1, pv.neg(p2))
+}
+
+pv.mul = function (p1, c) {
+  let p = {}
+  for (let k in p1) {
+    p[k] = p1[k] * c
+  }
+  return p
+}
+
+pv.neg = function (p) {
+  return pv.mul(p, -1)
+}
+
+pv.norm = function (p) {
+  let norm = 0
+  for (let k in p) {
+    norm += p[k] * p[k]
+  }
+  return norm
+}
+
+pv.str = function (p, len=4) {
+  let lines = []
+  for (let k in p) {
+    lines.push(k+':'+p[k].toFixed(len))
+  }
+  return '{' + lines.join(', ') + '}'
+}
+*/
