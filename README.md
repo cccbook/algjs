@@ -12,6 +12,7 @@
 10. [分割擊破法](code/divideConquer)
 11. [雜湊法](code/hashing)
 12. [查表法](code/tableLookup)
+13. [數值算法](code/numerical)
 14. [貪婪法](code/greedy)
 15. [圖形表示法](code/graph)
 16. [搜尋法](code/search)
