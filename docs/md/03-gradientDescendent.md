@@ -36,7 +36,7 @@ $$\nabla_{x} f(x) = \left[ \frac{\partial }{\partial x_1} f(x), \frac{\partial }
 
 問題是、這樣的數學符號對程式人有點可怕，到底梯度有甚麼直覺意義呢？讓我們看看下圖：
 
-![](../img/Gradient.jpg)
+![](https://cccbook.github.io/algjs/docs/img/Gradient.jpg)
 
 
 其實梯度就是斜率最大的那個方向，所以梯度下降法，其實就是朝著斜率最大的方向走。

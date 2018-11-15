@@ -79,7 +79,7 @@ $$\frac{\partial{f(x,y)}}{\partial{x}} = \frac{\partial{xy}}{\partial{x}} = y$$
 
 讓我們考慮一個更複雜的兩層式網路如下圖，該網路是計算 f = (x+y) * z 這個算式。
 
-![](https://cccbook.github.io/aijs/docs/img/gateNet.png)
+![](https://cccbook.github.io/algjs/docs/img/gateNet.png)
 
 其中的 q = x+y, 而 f = q*z。
 

@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <title>04-backPropagation</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.2/katex.min.css">
+      
+
+      
+      
+      
+
+      <style> 
+      /**
+ * prism.js Github theme based on GitHub's theme.
+ * @author Sam Clarke
+ */
+code[class*="language-"],
+pre[class*="language-"] {
+  color: #333;
+  background: none;
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.4;
+
+  -moz-tab-size: 8;
+  -o-tab-size: 8;
+  tab-size: 8;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+  padding: .8em;
+  overflow: auto;
+  /* border: 1px solid #ddd; */
+  border-radius: 3px;
+  /* background: #fff; */
+  background: #f5f5f5;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+  padding: .1em;
+  border-radius: .3em;
+  white-space: normal;
+  background: #f5f5f5;
+}
+
+.token.comment,
+.token.blockquote {
+  color: #969896;
+}
+
+.token.cdata {
+  color: #183691;
+}
+
+.token.doctype,
+.token.punctuation,
+.token.variable,
+.token.macro.property {
+  color: #333;
+}
+
+.token.operator,
+.token.important,
+.token.keyword,
+.token.rule,
+.token.builtin {
+  color: #a71d5d;
+}
+
+.token.string,
+.token.url,
+.token.regex,
+.token.attr-value {
+  color: #183691;
+}
+
+.token.property,
+.token.number,
+.token.boolean,
+.token.entity,
+.token.atrule,
+.token.constant,
+.token.symbol,
+.token.command,
+.token.code {
+  color: #0086b3;
+}
+
+.token.tag,
+.token.selector,
+.token.prolog {
+  color: #63a35c;
+}
+
+.token.function,
+.token.namespace,
+.token.pseudo-element,
+.token.class,
+.token.class-name,
+.token.pseudo-class,
+.token.id,
+.token.url-reference .token.variable,
+.token.attr-name {
+  color: #795da3;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+.token.title,
+.token.title .token.punctuation {
+  font-weight: bold;
+  color: #1d3e81;
+}
+
+.token.list {
+  color: #ed6a43;
+}
+
+.token.inserted {
+  background-color: #eaffea;
+  color: #55a532;
+}
+
+.token.deleted {
+  background-color: #ffecec;
+  color: #bd2c00;
+}
+
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+
+/* JSON */
+.language-json .token.property {
+  color: #183691;
+}
+
+.language-markup .token.tag .token.punctuation {
+  color: #333;
+}
+
+/* CSS */
+code.language-css,
+.language-css .token.function {
+  color: #0086b3;
+}
+
+/* YAML */
+.language-yaml .token.atrule {
+  color: #63a35c;
+}
+
+code.language-yaml {
+  color: #183691;
+}
+
+/* Ruby */
+.language-ruby .token.function {
+  color: #333;
+}
+
+/* Markdown */
+.language-markdown .token.url {
+  color: #795da3;
+}
+
+/* Makefile */
+.language-makefile .token.symbol {
+  color: #795da3;
+}
+
+.language-makefile .token.variable {
+  color: #183691;
+}
+
+.language-makefile .token.builtin {
+  color: #0086b3;
+}
+
+/* Bash */
+.language-bash .token.keyword {
+  color: #0086b3;
+}html body{font-family:"Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ul,html body>ol{margin-bottom:16px}html body ul,html body ol{padding-left:2em}html body ul.no-list,html body ol.no-list{padding:0;list-style-type:none}html body ul ul,html body ul ol,html body ol ol,html body ol ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:bold;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:bold}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em !important;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::before,html body code::after{letter-spacing:-0.2em;content:"\00a0"}html body pre>code{padding:0;margin:0;font-size:.85em !important;word-break:normal;white-space:pre;background:transparent;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;font-size:.85em !important;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:before,html body pre tt:before,html body pre code:after,html body pre tt:after{content:normal}html body p,html body blockquote,html body ul,html body ol,html body dl,html body pre{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body pre,html body code{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview .pagebreak,.markdown-preview .newpage{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center !important}.markdown-preview:not([for="preview"]) .code-chunk .btn-group{display:none}.markdown-preview:not([for="preview"]) .code-chunk .status{display:none}.markdown-preview:not([for="preview"]) .code-chunk .output-div{margin-bottom:16px}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0}@media screen and (min-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px)}}@media screen and (max-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{font-size:14px !important;padding:1em}}@media print{html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,0.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{padding:0 1.6em;margin-top:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc li{margin-bottom:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{list-style-type:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% -  300px);padding:2em calc(50% - 457px -  150px);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none} 
+       
+      </style>
+    </head>
+    <body for="html-export">
+      <div class="mume markdown-preview   ">
+      <h1 class="mume-header" id="&#x7B2C;-4-&#x7AE0;-&#x53CD;&#x50B3;&#x905E;&#x7B97;&#x6CD5;">第 4 章 - 反傳遞算法</h1>
+
+<p>如前文所述，《梯度下降法》是《深度學習神經網路》背後的學習算法，但是再輸入變數很多時，純粹靠《多次前向計算》的《梯度下降法》速度會過慢，因此我們需要使用《反傳遞算法》更有效率的計算《梯度》。</p>
+<h2 class="mume-header" id="&#x7BC0;&#x9EDE;-node">節點 Node</h2>
+
+<p>反傳遞算法是用來快速計算神經網路中梯度的方法，方法是把每個變數都變成一個具有(值 v + 梯度 g) 的節點 (node)，其結構如下：</p>
+<ul>
+<li><a href="https://github.com/cccbook/aijs/blob/master/project/nn1/lib/node.js">https://github.com/cccbook/aijs/blob/master/project/nn1/lib/node.js</a></li>
+</ul>
+<pre class="language-js"><span class="token keyword">class</span> <span class="token class-name">Node</span> <span class="token punctuation">{</span>
+  <span class="token function">constructor</span><span class="token punctuation">(</span>v <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> g <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>v <span class="token operator">=</span> v <span class="token comment" spellcheck="true">// 輸出值 (f(x))</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>g <span class="token operator">=</span> g <span class="token comment" spellcheck="true">// 梯度值 (偏微分)</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</pre>
+<h2 class="mume-header" id="&#x9598;-gate">閘 Gate</h2>
+
+<p>神經網路中的每個運算，都被表示成一種閘 (Gate)，這些閘可以進行正向 forward 計算，也可以反向 backward 傳遞梯度，以下是 Gate 的類別定義。</p>
+<ul>
+<li><a href="https://github.com/cccbook/aijs/blob/master/project/nn1/lib/gate.js">https://github.com/cccbook/aijs/blob/master/project/nn1/lib/gate.js</a></li>
+</ul>
+<pre class="language-js"><span class="token keyword">class</span> <span class="token class-name">Gate</span> <span class="token punctuation">{</span>
+  <span class="token function">constructor</span><span class="token punctuation">(</span>o<span class="token punctuation">,</span> x<span class="token punctuation">,</span> y<span class="token punctuation">,</span> f<span class="token punctuation">,</span> gfx<span class="token punctuation">,</span> gfy<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>p <span class="token operator">=</span> <span class="token punctuation">{</span>o<span class="token punctuation">:</span>o<span class="token punctuation">,</span> x<span class="token punctuation">:</span>x<span class="token punctuation">,</span> y<span class="token punctuation">:</span>y<span class="token punctuation">,</span> f<span class="token punctuation">:</span>f<span class="token punctuation">,</span> gfx<span class="token punctuation">:</span>gfx<span class="token punctuation">,</span> gfy<span class="token punctuation">:</span>gfy<span class="token operator">||</span>gfx<span class="token punctuation">}</span> <span class="token comment" spellcheck="true">// 當 gfy 沒設定時，就代表 gfy = gfx</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token function">forward</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">let</span> p <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>p
+    p<span class="token punctuation">.</span>o<span class="token punctuation">.</span>v <span class="token operator">=</span> p<span class="token punctuation">.</span><span class="token function">f</span><span class="token punctuation">(</span>p<span class="token punctuation">.</span>x<span class="token punctuation">.</span>v<span class="token punctuation">,</span> p<span class="token punctuation">.</span>y<span class="token punctuation">.</span>v<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token function">backward</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">let</span> p <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>p
+    p<span class="token punctuation">.</span>x<span class="token punctuation">.</span>g <span class="token operator">=</span> p<span class="token punctuation">.</span><span class="token function">gfx</span><span class="token punctuation">(</span>p<span class="token punctuation">.</span>o<span class="token punctuation">.</span>v<span class="token punctuation">)</span>
+    p<span class="token punctuation">.</span>y<span class="token punctuation">.</span>g <span class="token operator">=</span> p<span class="token punctuation">.</span><span class="token function">gfy</span><span class="token punctuation">(</span>p<span class="token punctuation">.</span>o<span class="token punctuation">.</span>v<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</pre>
+<p>對於每個 gate ，函數 f 是用來進行《正向傳遞》forward() 計算的。</p>
+<p>舉例而言，我們可以使用以下指令定義一個乘法閘 gmul</p>
+<pre class="language-js"><span class="token comment" spellcheck="true">//                                f          gfx       gfy</span>
+<span class="token keyword">let</span> gmul <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Gate</span><span class="token punctuation">(</span>o<span class="token punctuation">,</span> x<span class="token punctuation">,</span> y<span class="token punctuation">,</span> <span class="token punctuation">(</span>x<span class="token punctuation">,</span>y<span class="token punctuation">)</span><span class="token operator">=></span>x<span class="token operator">*</span>y<span class="token punctuation">,</span> <span class="token punctuation">(</span>x<span class="token punctuation">,</span>y<span class="token punctuation">)</span><span class="token operator">=></span>y<span class="token punctuation">,</span> <span class="token punctuation">(</span>x<span class="token punctuation">,</span>y<span class="token punctuation">)</span><span class="token operator">=></span>x<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre>
+<p>其中的 f(x,y)=&gt;x*y 是 gmul 的正向計算函數，會計算出 o.v = x.v * y.v 的結果，放在節點 o 中。</p>
+<p>而 gfx(x,y)=&gt;y 與 gfy(x,y)=&gt;x 是 gmul 的反向計算函數，會根據 o 節點的《值與梯度》 (o.v, o.g) 反向計算出 x, y 的梯度 x.g 與 y.g 。</p>
+<p>前向計算函數 f 是個乘法閘 f(x,y)=x*y，應該很容易理解。但是反向計算函數 gfx 與 gfy 為何是 gfx(x,y)=&gt;y 與 gfx(x,y)=&gt;x 呢？</p>
+<h2 class="mume-header" id="&#x53CD;&#x50B3;&#x905E;&#x7684;&#x539F;&#x7406;">反傳遞的原理</h2>
+
+<p>梯度的反向傳遞原理在 Andrej Karpathy 的  <a href="http://karpathy.github.io/neuralnets/">Hacker's guide to Neural Networks</a> 一文中有詳盡的說明，讓我們在此簡述其精要。</p>
+<p>對於 f(x,y) = xy 而言，假如 f 的梯度為 f.g ，那麼由於：</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mfrac><mrow><mi mathvariant="normal">∂</mi><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo>)</mo></mrow></mrow><mrow><mi mathvariant="normal">∂</mi><mrow><mi>x</mi></mrow></mrow></mfrac><mo>=</mo><mfrac><mrow><mi mathvariant="normal">∂</mi><mrow><mi>x</mi><mi>y</mi></mrow></mrow><mrow><mi mathvariant="normal">∂</mi><mrow><mi>x</mi></mrow></mrow></mfrac><mo>=</mo><mi>y</mi></mrow><annotation encoding="application/x-tex">\frac{\partial{f(x,y)}}{\partial{x}} = \frac{\partial{xy}}{\partial{x}} = y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:1.427em;"></span><span class="strut bottom" style="height:2.113em;vertical-align:-0.686em;"></span><span class="base"><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.427em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathrm" style="margin-right:0.05556em;">∂</span><span class="mord"><span class="mord mathit">x</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathrm" style="margin-right:0.05556em;">∂</span><span class="mord"><span class="mord mathit" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathit">x</span><span class="mpunct">,</span><span class="mord mathit" style="margin-right:0.03588em;">y</span><span class="mclose">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mrel">=</span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3714399999999998em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathrm" style="margin-right:0.05556em;">∂</span><span class="mord"><span class="mord mathit">x</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathrm" style="margin-right:0.05556em;">∂</span><span class="mord"><span class="mord mathit">x</span><span class="mord mathit" style="margin-right:0.03588em;">y</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mrel">=</span><span class="mord mathit" style="margin-right:0.03588em;">y</span></span></span></span></span></p>
+<p>因此 x 的梯度應該是 x.g = y * f.g。</p>
+<p>同理、 y 的梯度 y.g = x * f.g 。</p>
+<p>所以只需要知道 f.g 與 f(x,y)=xy，就可以逆向推出 x.g 與 y.g。</p>
+<p>這就是所謂的《梯度反傳遞》。</p>
+<p>而這也是為何上述程式中 gfx(x,y)=&gt;y 與 gfy(x,y)=&gt;x 的原因。</p>
+<p>讓我們考慮一個更複雜的兩層式網路如下圖，該網路是計算 f = (x+y) * z 這個算式。</p>
+<p><img src="https://cccbook.github.io/algjs/docs/img/gateNet.png" alt=""></p>
+<p>其中的 q = x+y, 而 f = q*z。</p>
+<p>根據偏微分的鏈鎖規則，我們可以用以下數學式描述 f, q, x 之間的梯度關係。</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mfrac><mrow><mi mathvariant="normal">∂</mi><mrow><mi>f</mi><mo>(</mo><mi>q</mi><mo separator="true">,</mo><mi>z</mi><mo>)</mo></mrow></mrow><mrow><mi mathvariant="normal">∂</mi><mrow><mi>x</mi></mrow></mrow></mfrac><mo>=</mo><mfrac><mrow><mi mathvariant="normal">∂</mi><mrow><mi>q</mi><mo>(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo>)</mo></mrow></mrow><mrow><mi mathvariant="normal">∂</mi><mrow><mi>x</mi></mrow></mrow></mfrac><mfrac><mrow><mi mathvariant="normal">∂</mi><mrow><mi>f</mi><mo>(</mo><mi>q</mi><mo separator="true">,</mo><mi>z</mi><mo>)</mo></mrow></mrow><mrow><mi mathvariant="normal">∂</mi><mrow><mi>q</mi></mrow></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac{\partial{f(q,z)}}{\partial{x}} = \frac{\partial{q(x,y)}}{\partial{x}} \frac{\partial{f(q,z)}}{\partial{q}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:1.427em;"></span><span class="strut bottom" style="height:2.30744em;vertical-align:-0.8804400000000001em;"></span><span class="base"><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.427em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathrm" style="margin-right:0.05556em;">∂</span><span class="mord"><span class="mord mathit">x</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathrm" style="margin-right:0.05556em;">∂</span><span class="mord"><span class="mord mathit" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathit" style="margin-right:0.03588em;">q</span><span class="mpunct">,</span><span class="mord mathit" style="margin-right:0.04398em;">z</span><span class="mclose">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mrel">=</span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.427em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathrm" style="margin-right:0.05556em;">∂</span><span class="mord"><span class="mord mathit">x</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathrm" style="margin-right:0.05556em;">∂</span><span class="mord"><span class="mord mathit" style="margin-right:0.03588em;">q</span><span class="mopen">(</span><span class="mord mathit">x</span><span class="mpunct">,</span><span class="mord mathit" style="margin-right:0.03588em;">y</span><span class="mclose">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.427em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathrm" style="margin-right:0.05556em;">∂</span><span class="mord"><span class="mord mathit" style="margin-right:0.03588em;">q</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathrm" style="margin-right:0.05556em;">∂</span><span class="mord"><span class="mord mathit" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathit" style="margin-right:0.03588em;">q</span><span class="mpunct">,</span><span class="mord mathit" style="margin-right:0.04398em;">z</span><span class="mclose">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.8804400000000001em;"></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<p>由於 f 為輸出，我們可以先將 f 的梯度 f.g 設定為 1，那麼就可以推斷其他變數的梯度值。</p>
+<p>(註：其實輸出 f.g 可以設為一的非零值，代表梯度下降的移動長度，對於有《樣本與標準答案》的學習，可以將 f.g 設為輸出與標準答案的差距)</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mfrac><mrow><mi mathvariant="normal">∂</mi><mrow><mi>f</mi><mo>(</mo><mi>q</mi><mo separator="true">,</mo><mi>z</mi><mo>)</mo></mrow></mrow><mrow><mi mathvariant="normal">∂</mi><mrow><mi>q</mi></mrow></mrow></mfrac><mo>=</mo><mfrac><mrow><mi mathvariant="normal">∂</mi><mrow><mi>q</mi><mi>z</mi></mrow></mrow><mrow><mi mathvariant="normal">∂</mi><mrow><mi>q</mi></mrow></mrow></mfrac><mo>=</mo><mi>z</mi></mrow><annotation encoding="application/x-tex">\frac{\partial{f(q,z)}}{\partial{q}} = \frac{\partial{qz}}{\partial{q}} =z</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:1.427em;"></span><span class="strut bottom" style="height:2.30744em;vertical-align:-0.8804400000000001em;"></span><span class="base"><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.427em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathrm" style="margin-right:0.05556em;">∂</span><span class="mord"><span class="mord mathit" style="margin-right:0.03588em;">q</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathrm" style="margin-right:0.05556em;">∂</span><span class="mord"><span class="mord mathit" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathit" style="margin-right:0.03588em;">q</span><span class="mpunct">,</span><span class="mord mathit" style="margin-right:0.04398em;">z</span><span class="mclose">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.8804400000000001em;"></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mrel">=</span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3714399999999998em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathrm" style="margin-right:0.05556em;">∂</span><span class="mord"><span class="mord mathit" style="margin-right:0.03588em;">q</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathrm" style="margin-right:0.05556em;">∂</span><span class="mord"><span class="mord mathit" style="margin-right:0.03588em;">q</span><span class="mord mathit" style="margin-right:0.04398em;">z</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.8804400000000001em;"></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mrel">=</span><span class="mord mathit" style="margin-right:0.04398em;">z</span></span></span></span></span></p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>x</mi><mi mathvariant="normal">.</mi><mi>g</mi><mo>=</mo><mfrac><mrow><mi mathvariant="normal">∂</mi><mrow><mi>f</mi><mo>(</mo><mi>q</mi><mo separator="true">,</mo><mi>z</mi><mo>)</mo></mrow></mrow><mrow><mi mathvariant="normal">∂</mi><mrow><mi>x</mi></mrow></mrow></mfrac><mo>=</mo><mfrac><mrow><mi mathvariant="normal">∂</mi><mrow><mi>f</mi><mo>(</mo><mi>q</mi><mo separator="true">,</mo><mi>z</mi><mo>)</mo></mrow></mrow><mrow><mi mathvariant="normal">∂</mi><mrow><mi>q</mi></mrow></mrow></mfrac><mfrac><mrow><mi mathvariant="normal">∂</mi><mrow><mi>q</mi><mo>(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo>)</mo></mrow></mrow><mrow><mi mathvariant="normal">∂</mi><mrow><mi>x</mi></mrow></mrow></mfrac><mo>=</mo><mfrac><mrow><mi mathvariant="normal">∂</mi><mrow><mi>q</mi><mi>z</mi></mrow></mrow><mrow><mi mathvariant="normal">∂</mi><mrow><mi>q</mi></mrow></mrow></mfrac><mfrac><mrow><mi mathvariant="normal">∂</mi><mrow><mi>x</mi><mo>+</mo><mi>y</mi></mrow></mrow><mrow><mi mathvariant="normal">∂</mi><mrow><mi>x</mi></mrow></mrow></mfrac><mo>=</mo><mi>z</mi><mo>∗</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">x.g = \frac{\partial{f(q,z)}}{\partial{x}} = \frac{\partial{f(q,z)}}{\partial{q}} \frac{\partial{q(x,y)}}{\partial{x}}=\frac{\partial{qz}}{\partial{q}} \frac{\partial{x+y}}{\partial{x}}=z*1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:1.427em;"></span><span class="strut bottom" style="height:2.30744em;vertical-align:-0.8804400000000001em;"></span><span class="base"><span class="mord mathit">x</span><span class="mord mathrm">.</span><span class="mord mathit" style="margin-right:0.03588em;">g</span><span class="mrel">=</span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.427em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathrm" style="margin-right:0.05556em;">∂</span><span class="mord"><span class="mord mathit">x</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathrm" style="margin-right:0.05556em;">∂</span><span class="mord"><span class="mord mathit" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathit" style="margin-right:0.03588em;">q</span><span class="mpunct">,</span><span class="mord mathit" style="margin-right:0.04398em;">z</span><span class="mclose">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mrel">=</span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.427em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathrm" style="margin-right:0.05556em;">∂</span><span class="mord"><span class="mord mathit" style="margin-right:0.03588em;">q</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathrm" style="margin-right:0.05556em;">∂</span><span class="mord"><span class="mord mathit" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathit" style="margin-right:0.03588em;">q</span><span class="mpunct">,</span><span class="mord mathit" style="margin-right:0.04398em;">z</span><span class="mclose">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.8804400000000001em;"></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.427em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathrm" style="margin-right:0.05556em;">∂</span><span class="mord"><span class="mord mathit">x</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathrm" style="margin-right:0.05556em;">∂</span><span class="mord"><span class="mord mathit" style="margin-right:0.03588em;">q</span><span class="mopen">(</span><span class="mord mathit">x</span><span class="mpunct">,</span><span class="mord mathit" style="margin-right:0.03588em;">y</span><span class="mclose">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mrel">=</span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3714399999999998em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathrm" style="margin-right:0.05556em;">∂</span><span class="mord"><span class="mord mathit" style="margin-right:0.03588em;">q</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathrm" style="margin-right:0.05556em;">∂</span><span class="mord"><span class="mord mathit" style="margin-right:0.03588em;">q</span><span class="mord mathit" style="margin-right:0.04398em;">z</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.8804400000000001em;"></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3714399999999998em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathrm" style="margin-right:0.05556em;">∂</span><span class="mord"><span class="mord mathit">x</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathrm" style="margin-right:0.05556em;">∂</span><span class="mord"><span class="mord mathit">x</span><span class="mbin">+</span><span class="mord mathit" style="margin-right:0.03588em;">y</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mrel">=</span><span class="mord mathit" style="margin-right:0.04398em;">z</span><span class="mbin">∗</span><span class="mord mathrm">1</span></span></span></span></span></p>
+<p>因此當 <code>f.g</code> 已知的時候，我們可以算出 <code>q.g</code> ，由於 <code>f = q*z</code> ，因此  q 的梯度 <code>q.g = z*f.g</code>  (當 f.g = 1 時，則 q.g = z)。</p>
+<p>接著我們可以透過 <code>q=x+y</code> 來計算 x 的梯度，得到 <code>x.g=q.g*f.g</code> 來計算 x 的梯度 <code>x.g</code> ，於是同樣得到 <code>x.g=z*f.g</code> (因為 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mfrac><mrow><mi mathvariant="normal">∂</mi><mrow><mi>q</mi></mrow></mrow><mrow><mi mathvariant="normal">∂</mi><mrow><mi>x</mi></mrow></mrow></mfrac><mo>=</mo><mfrac><mrow><mi mathvariant="normal">∂</mi><mrow><mi>x</mi><mo>+</mo><mi>y</mi></mrow></mrow><mrow><mi mathvariant="normal">∂</mi><mrow><mi>x</mi></mrow></mrow></mfrac><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\frac{\partial{q}}{\partial{x}}=\frac{\partial{x+y}}{\partial{x}}=1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.9322159999999999em;"></span><span class="strut bottom" style="height:1.277216em;vertical-align:-0.345em;"></span><span class="base"><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9322159999999999em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathrm mtight" style="margin-right:0.05556em;">∂</span><span class="mord mtight"><span class="mord mathit mtight">x</span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.446108em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathrm mtight" style="margin-right:0.05556em;">∂</span><span class="mord mtight"><span class="mord mathit mtight" style="margin-right:0.03588em;">q</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mrel">=</span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9322159999999999em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathrm mtight" style="margin-right:0.05556em;">∂</span><span class="mord mtight"><span class="mord mathit mtight">x</span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.446108em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathrm mtight" style="margin-right:0.05556em;">∂</span><span class="mord mtight"><span class="mord mathit mtight">x</span><span class="mbin mtight">+</span><span class="mord mathit mtight" style="margin-right:0.03588em;">y</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mrel">=</span><span class="mord mathrm">1</span></span></span></span> )。</p>
+<p>經由這種反傳遞的方式，我們就能從輸出端一路到推回中間層、然後再推回輸入端，計算出每個節點的梯度。</p>
+<h2 class="mume-header" id="&#x7DB2;&#x8DEF;-net">網路 Net</h2>
+
+<p>透過這些 Node + Gate 的組合，我們可以設計出能計算任何函數的神經網路 Net。</p>
+<p>舉例而言，以下網路 net 會計算 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">x^2+y^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.8141079999999999em;"></span><span class="strut bottom" style="height:1.008548em;vertical-align:-0.19444em;"></span><span class="base"><span class="mord"><span class="mord mathit">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathrm mtight">2</span></span></span></span></span></span></span></span><span class="mbin">+</span><span class="mord"><span class="mord mathit" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathrm mtight">2</span></span></span></span></span></span></span></span></span></span></span> ，其輸出結果會放在節點 o 當中。</p>
+<ul>
+<li><a href="https://github.com/cccbook/aijs/blob/master/project/nn1/example/02-backprop/f.js">https://github.com/cccbook/aijs/blob/master/project/nn1/example/02-backprop/f.js</a></li>
+</ul>
+<pre class="language-js"><span class="token keyword">const</span> net <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">nn<span class="token punctuation">.</span>Net</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> x <span class="token operator">=</span> net<span class="token punctuation">.</span><span class="token function">variable</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> y <span class="token operator">=</span> net<span class="token punctuation">.</span><span class="token function">variable</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> x2 <span class="token operator">=</span> net<span class="token punctuation">.</span><span class="token function">mul</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> x<span class="token punctuation">)</span>
+<span class="token keyword">let</span> y2 <span class="token operator">=</span> net<span class="token punctuation">.</span><span class="token function">mul</span><span class="token punctuation">(</span>y<span class="token punctuation">,</span> y<span class="token punctuation">)</span>
+<span class="token keyword">let</span> o  <span class="token operator">=</span> net<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>x2<span class="token punctuation">,</span> y2<span class="token punctuation">)</span>
+</pre>
+<p>我們只要呼叫網路的正向傳遞函數 net.forward() 就能從輸入值開始，經過每個閘的前向傳遞 gate.forward() 計算出結果 。</p>
+<ul>
+<li><a href="https://github.com/cccbook/aijs/blob/master/project/nn1/lib/net.js">https://github.com/cccbook/aijs/blob/master/project/nn1/lib/net.js</a></li>
+</ul>
+<pre class="language-js"><span class="token keyword">class</span> <span class="token class-name">Net</span> <span class="token punctuation">{</span>
+
+  constructor <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>gates <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+  <span class="token punctuation">}</span>
+
+  variable <span class="token punctuation">(</span>v<span class="token punctuation">,</span> g<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Node</span><span class="token punctuation">(</span>v<span class="token punctuation">,</span> g<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+
+  op <span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">,</span> f<span class="token punctuation">,</span> gfx<span class="token punctuation">,</span> gfy<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">let</span> o <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Node</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">let</span> g <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Gate</span><span class="token punctuation">(</span>o<span class="token punctuation">,</span> x<span class="token punctuation">,</span> y<span class="token punctuation">,</span> f<span class="token punctuation">,</span> gfx<span class="token punctuation">,</span> gfy<span class="token punctuation">)</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>gates<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>g<span class="token punctuation">)</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>o <span class="token operator">=</span> o
+    <span class="token keyword">return</span> o
+  <span class="token punctuation">}</span>
+
+  add <span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">op</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">,</span> <span class="token punctuation">(</span>x<span class="token punctuation">,</span>y<span class="token punctuation">)</span><span class="token operator">=></span>x<span class="token operator">+</span>y<span class="token punctuation">,</span> <span class="token punctuation">(</span>x<span class="token punctuation">,</span>y<span class="token punctuation">)</span><span class="token operator">=></span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">}</span>
+  mul <span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">op</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">,</span> <span class="token punctuation">(</span>x<span class="token punctuation">,</span>y<span class="token punctuation">)</span><span class="token operator">=></span>x<span class="token operator">*</span>y<span class="token punctuation">,</span> <span class="token punctuation">(</span>x<span class="token punctuation">,</span>y<span class="token punctuation">)</span><span class="token operator">=></span>y<span class="token punctuation">,</span> <span class="token punctuation">(</span>x<span class="token punctuation">,</span>y<span class="token punctuation">)</span><span class="token operator">=></span>x<span class="token punctuation">)</span> <span class="token punctuation">}</span>
+
+  <span class="token function">forward</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token comment" spellcheck="true">// 正向傳遞計算結果</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> gate <span class="token keyword">of</span> <span class="token keyword">this</span><span class="token punctuation">.</span>gates<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      gate<span class="token punctuation">.</span><span class="token function">forward</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>o
+  <span class="token punctuation">}</span>
+
+  <span class="token function">backward</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token comment" spellcheck="true">// 反向傳遞計算梯度</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>o<span class="token punctuation">.</span>g <span class="token operator">=</span> <span class="token number">1</span> <span class="token comment" spellcheck="true">// 設定輸出節點 o 的梯度為 1</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> i<span class="token operator">=</span><span class="token keyword">this</span><span class="token punctuation">.</span>gates<span class="token punctuation">.</span>length<span class="token number">-1</span><span class="token punctuation">;</span> i<span class="token operator">>=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">--</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token comment" spellcheck="true">// 反向傳遞計算每個節點 Node 的梯度 g</span>
+      <span class="token keyword">let</span> gate <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>gates<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
+      gate<span class="token punctuation">.</span><span class="token function">backward</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+
+  watch <span class="token punctuation">(</span>nodes<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>nodes <span class="token operator">=</span> nodes
+  <span class="token punctuation">}</span>
+
+  <span class="token function">dump</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>nodes
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</pre>
+<p>當我們想知道該網路的輸入 (x,y) 應該調整多少，才能朝梯度方向前進時，我們只要呼叫 net.backward() ，就能透過反向傳遞計算出每個節點的梯度。</p>
+<h2 class="mume-header" id="&#x7A0B;&#x5F0F;&#x57F7;&#x884C;">程式執行</h2>
+
+<p>有了上述概念後，讓我們來看個範例好了，以下這個網路是計算 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>o</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">o=x^2+y^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.8141079999999999em;"></span><span class="strut bottom" style="height:1.008548em;vertical-align:-0.19444em;"></span><span class="base"><span class="mord mathit">o</span><span class="mrel">=</span><span class="mord"><span class="mord mathit">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathrm mtight">2</span></span></span></span></span></span></span></span><span class="mbin">+</span><span class="mord"><span class="mord mathit" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathrm mtight">2</span></span></span></span></span></span></span></span></span></span></span> 的函數，我們希望能透過《梯度下降+反傳遞算法》找出其最低點。</p>
+<ul>
+<li><a href="https://github.com/cccbook/aijs/blob/master/project/nn1/example/02-backprop/f.js">https://github.com/cccbook/aijs/blob/master/project/nn1/example/02-backprop/f.js</a></li>
+</ul>
+<p>檔案: f.js</p>
+<pre class="language-js"><span class="token keyword">const</span> nn <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'../../nn'</span><span class="token punctuation">)</span>
+<span class="token keyword">const</span> net <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">nn<span class="token punctuation">.</span>Net</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> x <span class="token operator">=</span> net<span class="token punctuation">.</span><span class="token function">variable</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> y <span class="token operator">=</span> net<span class="token punctuation">.</span><span class="token function">variable</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> x2 <span class="token operator">=</span> net<span class="token punctuation">.</span><span class="token function">mul</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> x<span class="token punctuation">)</span>
+<span class="token keyword">let</span> y2 <span class="token operator">=</span> net<span class="token punctuation">.</span><span class="token function">mul</span><span class="token punctuation">(</span>y<span class="token punctuation">,</span> y<span class="token punctuation">)</span>
+<span class="token keyword">let</span> o  <span class="token operator">=</span> net<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>x2<span class="token punctuation">,</span> y2<span class="token punctuation">)</span>
+
+net<span class="token punctuation">.</span><span class="token function">watch</span><span class="token punctuation">(</span><span class="token punctuation">{</span>x<span class="token punctuation">,</span>y<span class="token punctuation">,</span>x2<span class="token punctuation">,</span>y2<span class="token punctuation">,</span>o<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">nn<span class="token punctuation">.</span>FNet</span><span class="token punctuation">(</span>net<span class="token punctuation">,</span> <span class="token punctuation">{</span>x<span class="token punctuation">:</span>x<span class="token punctuation">,</span> y<span class="token punctuation">:</span>y<span class="token punctuation">}</span><span class="token punctuation">)</span>
+</pre>
+<p>該程式的主程式很簡單，只是對該網路呼叫梯度下降法進行優化而已。</p>
+<p>檔案: optimizeEx.js</p>
+<ul>
+<li><a href="https://github.com/cccbook/aijs/blob/master/project/nn1/example/02-backprop/optimizeEx.js">https://github.com/cccbook/aijs/blob/master/project/nn1/example/02-backprop/optimizeEx.js</a></li>
+</ul>
+<pre class="language-js"><span class="token keyword">const</span> nn <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'../../nn'</span><span class="token punctuation">)</span>
+<span class="token keyword">const</span> f <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'./f'</span><span class="token punctuation">)</span>
+
+nn<span class="token punctuation">.</span><span class="token function">optimize</span><span class="token punctuation">(</span>f<span class="token punctuation">,</span> <span class="token punctuation">{</span>x<span class="token punctuation">:</span><span class="token number">1</span><span class="token punctuation">,</span> y<span class="token punctuation">:</span><span class="token number">1</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+</pre>
+<p>執行的結果如下：</p>
+<pre class="language-">$ cd example/02-backprop
+
+$ node .\gradientEx
+
+p= {x:2.0000, y:1.0000} f(p)= 5
+  gp= { x: 4, y: 1 }
+p= {x:1.9600, y:0.9900} f(p)= 4.8217
+  gp= { x: 3.8415999999999997, y: 0.9801 }
+p= {x:1.9216, y:0.9802} f(p)= 4.653275148657
+  gp= { x: 3.692485069056, y: 0.960790079601 }
+p= {x:1.8847, y:0.9706} f(p)= 4.493987190929792
+  gp= { x: 3.5519401090757823, y: 0.9420470818540095 }
+// ... &#x4E2D;&#x9593;&#x7701;&#x7565; ....
+p= {x:0.0479, y:0.0467} f(p)= 0.004475389263812065
+  gp= { x: 0.00228988872537307, y: 0.0021855005384389947 }
+p= {x:0.0478, y:0.0467} f(p)= 0.004471155300865204
+  gp= { x: 0.002287697698821976, y: 0.0021834576020432284 }
+p= {x:0.0478, y:0.0467} f(p)= 0.004466927345179781
+  gp= { x: 0.002285509815916863, y: 0.002181417529262918 }
+</pre>
+<p>上述程式最後找到了 p={x:0.0478, y:0.0467} 這個非常接近 (0,0) 的點，正確地找到了函數 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">x^2+y^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.8141079999999999em;"></span><span class="strut bottom" style="height:1.008548em;vertical-align:-0.19444em;"></span><span class="base"><span class="mord"><span class="mord mathit">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathrm mtight">2</span></span></span></span></span></span></span></span><span class="mbin">+</span><span class="mord"><span class="mord mathit" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathrm mtight">2</span></span></span></span></span></span></span></span></span></span></span> 的最低點 f(0,0)=0。</p>
+<p>現在、您應該已經可以理解《梯度下降法與反傳遞算法》的運作原理了。</p>
+<p>雖然《反傳遞算法》早在 1963 年就由 Vapnik 提出了，但是卻直到 1986 年時才由於 Hinton 等人在語音辨識上的實作成果而引發注意。</p>
+<p>接著《神經網路》又沉寂了十幾年，到了 2011 年 Hinton 的學生用 CNN 捲積神經網路在影像辨識大賽中用 GPU 加速而大勝，再次導致神經網路進化為深度學習而爆紅。</p>
+<p>而這一切背後運作的《反傳遞算法》，經歷了整整一甲子，並沒有多大的改變，只要您理解了這個算法的原理，就能輕鬆踏進《深度學習的神經網路領域》了！</p>
+
+      </div>
+      <div class="md-sidebar-toc"><ul>
+<li><a href="#%E7%AC%AC-4-%E7%AB%A0-%E5%8F%8D%E5%82%B3%E9%81%9E%E7%AE%97%E6%B3%95">第 4 章 - 反傳遞算法</a>
+<ul>
+<li><a href="#%E7%AF%80%E9%BB%9E-node">節點 Node</a></li>
+<li><a href="#%E9%96%98-gate">閘 Gate</a></li>
+<li><a href="#%E5%8F%8D%E5%82%B3%E9%81%9E%E7%9A%84%E5%8E%9F%E7%90%86">反傳遞的原理</a></li>
+<li><a href="#%E7%B6%B2%E8%B7%AF-net">網路 Net</a></li>
+<li><a href="#%E7%A8%8B%E5%BC%8F%E5%9F%B7%E8%A1%8C">程式執行</a></li>
+</ul>
+</li>
+</ul>
+</div>
+      <a id="sidebar-toc-btn">≡</a>
+    </body>
+    
+    
+    
+    <script>
+(function bindTaskListEvent() {
+  var taskListItemCheckboxes = document.body.getElementsByClassName('task-list-item-checkbox')
+  for (var i = 0; i < taskListItemCheckboxes.length; i++) {
+    var checkbox = taskListItemCheckboxes[i]
+    var li = checkbox.parentElement
+    if (li.tagName !== 'LI') li = li.parentElement
+    if (li.tagName === 'LI') {
+      li.classList.add('task-list-item')
+    }
+  }
+}())    
+</script>
+    
+<script>
+
+var sidebarTOCBtn = document.getElementById('sidebar-toc-btn')
+sidebarTOCBtn.addEventListener('click', function(event) {
+  event.stopPropagation()
+  if (document.body.hasAttribute('html-show-sidebar-toc')) {
+    document.body.removeAttribute('html-show-sidebar-toc')
+  } else {
+    document.body.setAttribute('html-show-sidebar-toc', true)
+  }
+})
+</script>
+      
+  </html>
