@@ -6,7 +6,7 @@
 
 假如我們在 Google 裏輸入一個算式，Google 會幫我們畫出該函數。舉例而言，如果我在 Google 輸入 `x^2+3x+5` 這個算式，您會看到下列圖形：
 
-![圖、在 Google 輸入 x^2+3x+5 後顯示的函數圖](../img/GoogleGraph2D.jpg)
+![圖、在 Google 輸入 x^2+3x+5 後顯示的函數圖](https://cccbook.github.io/algjs/docs/img/GoogleGraph2D.jpg)
 
 這時您可以移動滑鼠，圖形會出現一個可移動的小藍點，該點會沿著曲線移動，上圖中 (x, y) 座標顯示為 x:6.07202181, y:60.0855143，
 就是那個小藍點所在的位置。
@@ -23,7 +23,7 @@
 
 採用這種想法，若我們想找 $x^2+3x+5$ 這個函數的最高，我們可以在 Google 輸入 `-(x^2+3x+5)` 就可以看到那座山了，以下是 Google 顯示的結果：
 
-![圖、在 Google 輸入 -(x^2+3x+5) 後顯示的函數圖](../img/GoogleGraph2DMountain.jpg)
+![圖、在 Google 輸入 -(x^2+3x+5) 後顯示的函數圖](https://cccbook.github.io/algjs/docs/img/GoogleGraph2DMountain.jpg)
 
 當然、如果函數有很多山峰，那這種方法只能走到小山丘就會停了。這時您可能會說，那為甚麼不再繼續往更高的山走去呢？
 
@@ -33,7 +33,7 @@
 
 此時、除非你爬出山谷，否則根本不可能找到更深的谷，這就是「流水下山演算法」所遭遇到的困難了。以下是我們用 Google 顯示 `(x-5)*(x-3)*(2x+5)*(x+3)` 這個具有兩個山谷的函數，所得到的圖形。
 
-![圖、兩個山谷的情況，如何找到最低的山谷呢？](../img/GoogleGraph2D2vally.jpg)
+![圖、兩個山谷的情況，如何找到最低的山谷呢？](https://cccbook.github.io/algjs/docs/img/GoogleGraph2D2vally.jpg)
 
 假如我們在上圖中左邊的山谷，那麼怎麼能知道右邊還有一個更低的山谷呢？這就是「流水下山演算法」的困難之所在了！
 
@@ -45,7 +45,7 @@
 
 另外、對於上述的單變數函數而言，不是往左邊走就是往右邊走，但是如果有兩個變數，例如像 `x^2+y^2+3x+5y+6` ，但是只有一個山谷，那麼我們該修改哪個變數呢？舉例而言，以下就是 Google 所畫出的 `x^2+y^2+3x+5y+6` 之圖形。
 
-![](../img/GoogleGraph3D.jpg) 
+![](https://cccbook.github.io/algjs/docs/img/GoogleGraph3D.jpg) 
 
 在上述的雙變數情形中，我們可以隨機的挑一個變數，然後向左或向右移動一小步，只要移動後的點更低就接受，如果連續很多次移動都沒辦法找到更低的點，就認為已經到達山谷，這樣的方法其實還蠻有效的，這種方法可以稱為「隨機下山演算法」 (反過來英文中以爬山的角度來看，所以稱為隨機爬山演算法 Stochastic Hill Climbing Algorithm)。
 

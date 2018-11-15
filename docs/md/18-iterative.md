@@ -131,7 +131,7 @@ x1: 1 x2 1.7320508075688772 x3 1.7320508075688772
 
 這三種方法的收斂情形如下圖：
 
-![](img/iteration.png)
+![](https://cccbook.github.io/algjs/docs/img/iteration.png)
 
 因此、好的迭代算式可以讓你上天堂，不好的迭代算式會讓你住牢房！
 
@@ -139,7 +139,7 @@ x1: 1 x2 1.7320508075688772 x3 1.7320508075688772
 
 當然、有人可能會問， 假如我想解的不是方程式，而是像下列的這種《方程組》的話，那該怎麼辦呢？
 
-![](img/equationSet.png)
+![](https://cccbook.github.io/algjs/docs/img/equationSet.png)
 
 其實這個問題， 只要稍微轉換一下，就可以讓 《方程組變成單一的方程式》
 

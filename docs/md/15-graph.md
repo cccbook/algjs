@@ -12,7 +12,7 @@
 
 圖形是由節點 (node) 與連線 (edge) 所組成的。舉例而言，以下是一個包含六個節點與十條連線的簡單圖形。
 
-![圖、圖形 Graph 的範例](graphSearch.jpg)
+![圖、圖形 Graph 的範例](https://cccbook.github.io/algjs/docs/img/graphSearch.jpg)
 
 ## 深度優先搜尋
 
@@ -45,7 +45,7 @@ function dfs(g, node) { // 深度優先搜尋
 
 針對上述的範例圖形，若採用深度優先搜尋，其結果可能如下所示 (圖中紅色的數字代表訪問順序)
 
-![圖、深度優先搜尋的順序](dfs.jpg)
+![圖、深度優先搜尋的順序](https://cccbook.github.io/algjs/docs/img/dfs.jpg)
 
 ## 廣度優先搜尋
 
@@ -57,7 +57,7 @@ function dfs(g, node) { // 深度優先搜尋
 
 舉例而言，針對上述的圖形範例，若採用「廣度優先搜尋 BFS 」的方式，那麼拜訪順序將會如下所示：
 
-![圖、廣度優先搜尋的順序](bfs.jpg)
+![圖、廣度優先搜尋的順序](https://cccbook.github.io/algjs/docs/img/bfs.jpg)
 
 要能用程式進行廣度優先搜尋，必須採用「先進先出」(First-in First-Out, FIFO) 的方式管理節點，因此通常在「廣度優先搜尋」裏會有個佇列 (queue) 結構，以下是 BFS 的演算法：
 

@@ -8,7 +8,7 @@
 
 其想法圖示如下：
 
-![](img/binarySearch.png)
+![](https://cccbook.github.io/algjs/docs/img/binarySearch.png)
 
 二分搜尋法求根的程式如下：
 
@@ -42,7 +42,7 @@ x= 0.2679481506347656  f(x)= 0.0000036088895285502076
 
 當然， 我們也可以改用另一種中間值的取法，像是用《線性內插法》在某些狀況下會更好！
 
-![](img/linearInterpolation.png)
+![](https://cccbook.github.io/algjs/docs/img/linearInterpolation.png)
 
 
 以上的這種搜尋法，不管是二分搜尋法，或者是線性內插法，速度通常都不會太慢！

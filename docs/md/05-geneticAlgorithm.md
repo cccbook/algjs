@@ -31,7 +31,8 @@ fitness 計算： 有多少位元和金鑰一樣就得多少分
 結果：第 26 代就找到正確答案，總共執行一百代
 
 程式： GA.js
-```
+
+```js
 var GA={
   population:[],
   mutationRate:0.1,

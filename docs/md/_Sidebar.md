@@ -2,9 +2,9 @@
 
 1. [查表法](01-tableLookup)
 2. [爬山演算法](02-hillClimbing)
-3. [梯度下降法](03-gradientDescendent)
-4. [反傳遞算法](04-gradientDescendent)
-5. [遺傳演算法](05-geneticAlgorithhm)
+3. [梯度下降法](https://cccbook.github.io/algjs/docs/html/03-gradientDescendent.html)
+4. [反傳遞算法](https://cccbook.github.io/algjs/docs/html/04-backPropagation.html)
+5. [遺傳演算法](05-geneticAlgorithm)
 6. [亂數產生法](06-random)
 7. [蒙地卡羅法](07-monteCarlo)
 8. [轉換領域法](08-transformDomain)
