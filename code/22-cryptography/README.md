@@ -30,6 +30,7 @@
 * [比特幣 (Bit Coin) 的運作原理](http://pansci.asia/archives/53571) -- 陳鍾誠
 * [A blockchain in 200 lines of code](https://medium.com/@lhartikk/a-blockchain-in-200-lines-of-code-963cc1cc0e54)
   * https://github.com/lhartikk/naivechain
+  * https://lhartikk.github.io/
 * [Blockchain Demo](https://anders.com/blockchain/)
 * https://anders.com/blockchain/
   * https://github.com/anders94/blockchain-demo/

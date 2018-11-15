@@ -1,0 +1,28 @@
+{
+  "name": "algjs",
+  "version": "0.0.1",
+  "description": "Algorithm in JS",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ccckmit/aljs.git"
+  },
+  "keywords": [
+    "Algorithm"
+  ],
+  "author": "ccc",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ccckmit/aljs/issues"
+  },
+  "homepage": "https://github.com/ccckmit/aljs#readme",
+  "dependencies": {
+    "crypto-js": "^3.1.9-1"
+  }
+}
