@@ -1,26 +1,3 @@
 # 書籍：專業程序員一定要會的 23 種算法
 
-1. [暴力法](code/bruteForce)
-2. [爬山演算法](code/hillClimbing)
-3. [梯度下降法](code/gradientDescendent)
-4. [迭代法](code/iterative)
-5. [遺傳演算法](code/geneticAlgorithhm)
-6. [亂數產生法](code/random)
-7. [蒙地卡羅法](code/monteCarlo)
-8. [轉換領域法](code/transformDomain)
-9. [動態規劃法](code/dynamicProgramming)
-10. [分割擊破法](code/divideConquer)
-11. [雜湊法](code/hashing)
-12. [查表法](code/tableLookup)
-13. [數值算法](code/numerical)
-14. [貪婪法](code/greedy)
-15. [圖形表示法](code/graph)
-16. [搜尋法](code/search)
-17. [對局搜尋法](code/gameSearch)
-18. [遞迴法](code/recursive)
-19. [遞迴下降法](code/recursiveDescendent)
-20. [字串比對法](code/stringMatching)
-21. [框架填充法](code/slotFilling)
-22. [加密演算法](code/cryptography)
-23. [轉換化約法](code/reduction)
-
+* 請點 [此處](code/md) 開始閱讀！
