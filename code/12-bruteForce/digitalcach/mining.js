@@ -11,7 +11,7 @@ function hash (text) {
 
 function mining(record) {
   for (var nonce=0; nonce<1000000000000; nonce++) {
-    record.nonce = nonce.toString(16)
+    record.nonce = nonce
     let h = hash(JSON.stringify(record))
     if (h.startsWith('00000')) return { nonce: nonce, hash: h }
   }
