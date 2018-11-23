@@ -7,4 +7,5 @@ var integral = function (f, a, b, dx = 0.01) {
   return area
 }
 
-console.log('integral(sin, 0, pi) =', integral(Math.sin, 0, Math.PI))
+console.log('integral(sqrt, 0, 1) =', integral(Math.sqrt, 0, 1))
+console.log('integral(sin,  0, pi) =', integral(Math.sin, 0, Math.PI))
