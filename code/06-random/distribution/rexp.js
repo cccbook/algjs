@@ -19,5 +19,5 @@ function rexp(lambda) {
 }
 
 for (let i=0; i<100; i++) {
-  console.log('rexp(2)=', rexp(2))
+  console.log('rexp(20)=', rexp(20))
 }
