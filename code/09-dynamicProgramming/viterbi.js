@@ -1,4 +1,3 @@
-const argmax = require('../lib/argmax')
 // 參考： https://zh.wikipedia.org/wiki/%E7%BB%B4%E7%89%B9%E6%AF%94%E7%AE%97%E6%B3%95
 
 // N 0.6 => 喵 0.4 | 汪 0.6
@@ -17,6 +16,14 @@ const P = {
   'N=>汪': 0.6,
   'V=>喵': 0.5,
   'V=>汪': 0.5,
+}
+
+function argmax(list) {
+  let max = Number.NEGATIVE_INFINITY, index = null
+  for (let k in list) {
+    if (list[k] > max) { index=k; max=list[k] }
+  }
+  return {max, index}
 }
 
 function viterbi(obs, states, P) {
