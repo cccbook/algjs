@@ -1,5 +1,3 @@
-// https://ccckmit.gitbooks.io/rlab/content/solveEquation.html
-
 function f(x) { return x*x-4*x+1; }
 
 function g(x) { return x-f(x)/4; }
