@@ -1,1 +1,1 @@
-請點 [此處](https://cccbook.github.io/algjs/docs/md/) 開始閱讀！
+請點 [此處](https://github.com/cccbook/algjs/wiki) 開始閱讀！
