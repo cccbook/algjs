@@ -12,9 +12,8 @@ c(n, k) = 0                        , if n < k
 function c(N, K) {
   var C = [];
   for (let n=0; n<=N; n++) {
-    C[n] = []
+    C[n] = [1]
     C[0][n] = 0
-    C[n][0] = 1
   }
   for (let n=1; n<=N; n++) {
     for (let k=1; k<=N; k++) {
