@@ -16,6 +16,9 @@ function decrypt(text) {
   return dec;
 }
  
-var hw = encrypt("hello world")
-// outputs hello world
-console.log(decrypt(hw))
+var plainText  = "hello world"
+var cipherText = encrypt(plainText)
+var decryptText = decrypt(cipherText)
+console.log('plainText  =', plainText)
+console.log('cipherText =', cipherText)
+console.log('decryptText=', decryptText)

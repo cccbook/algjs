@@ -1,11 +1,11 @@
 // 程式修改自 -- https://gist.github.com/1995eaton/86f10f4d0247b4e4e65e
 
 // 參考 -- https://en.wikipedia.org/wiki/Binary_heap
-/* 堆積：
+/*
 插入節點: 在陣列的最末尾插入新節點。然後自下而上調整子節點與父節點（稱作 bubble-up 或 sift-up）
          比較當前節點與父節點，不滿足「堆積性質」則交換。從而使得當前子樹滿足二元堆積的性質。
          時間複雜度為 O(log n)。
-刪除樹根：刪除時，把堆積儲存的最後那個節點移到填在根節點處。再從上而下調整父節點與它的子節點。
+刪除根節點：刪除時，把堆積儲存的最後那個節點移到填在根節點處。再從上而下調整父節點與它的子節點。
 */
 class Heap { // 堆積結構 Heap
   constructor (fn) {
@@ -89,22 +89,24 @@ var Huffman = {
     for (var i = 0; i < data.length; i++) {
       result += dict[data.charAt(i)] // 對每個字元編碼後加入結果的 0101.... 字串
     }
-    return {emap:dict, result:result}
+    var header = Object.keys(dict).map((e) => e.charCodeAt(0) + '|' + dict[e]).join('-')
+    console.log('dict=%j', dict)
+    // var header = Object.keys(dict).map(function(e) { return {ch:e, binary:dict[e]}})
+    return {header:header, result:result}
   },
   decode: function(h) {
-    var data = h.result.split(''), dmap = {}
-    // 將 emap(ch)=>binary 反轉為 dmap(binary)=>ch    
-    for (let ch in h.emap) {
-      let binary = h.emap[ch]
-      dmap[binary] = ch
-    }
+    var data = h.result.split(''), header = {}
+    h.header.split('-').forEach(function(e) {
+      var values = e.split('|')
+      header[values[1]] = String.fromCharCode(values[0])
+    })
     var result = ''
     while (data.length) {
       var i = 0, cur = ''
       while (data.length) {
         cur += data.shift()
-        if (dmap.hasOwnProperty(cur)) { // 查查看這個長度的二進位是否在 dmap 中
-          result += dmap[cur] // 有的話就進行編碼
+        if (header.hasOwnProperty(cur)) {
+          result += header[cur]
           break
         }
       }

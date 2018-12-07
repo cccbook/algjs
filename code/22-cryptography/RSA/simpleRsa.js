@@ -13,12 +13,15 @@ let e = 17 , d = 413
 // let e = 23, d = 
 
 var M1 = [65, 22, 37, 18, 29]
+var E1 = []
 var M2 = []
 for (let m of M1) {
   let c = mpower(m, e, N)
+  E1.push(c)
   let m2 = mpower(c, d, N)
   M2.push(m2)
 }
 
 console.log('M1=', M1)
+console.log('E1=', E1)
 console.log('M2=', M2)

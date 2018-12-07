@@ -23,5 +23,5 @@ var privateKey = fs.readFileSync('server.pem').toString()
 var signature = signer(algorithm, privateKey, data)
 
 var publicKey = fs.readFileSync('cert.pem').toString()
-console.log(verify(algorithm, publicKey, sigature, data))         // 驗證是否為公鑰發出者 (私鑰擁有者)
-console.log(verify(algorithm, publicKey, sigature, data + "xxx"))
+console.log('verify(data)=', verify(algorithm, publicKey, sigature, data))         // 驗證是否為公鑰發出者 (私鑰擁有者)
+console.log('verify(data+xxx)=', verify(algorithm, publicKey, sigature, data + "xxx"))
