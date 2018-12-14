@@ -1,4 +1,4 @@
-function editDistance (a, b){
+function editDistance (b, a){
   if(a.length == 0) return b.length; 
   if(b.length == 0) return a.length; 
 
@@ -18,15 +18,56 @@ function editDistance (a, b){
     }
   }
 
-  return m[b.length][a.length];
+  return {d:m[b.length][a.length], m:m};
+}
+
+function align(b, a, m) {
+  let i = b.length, j = a.length
+  let bx = '', ax = ''
+  while (i > 0 && j > 0) {
+    if (m[i][j] === m[i-1][j] + 1) { // 插入 b[i]
+      i--
+      ax = ' '  + ax
+      bx = b[i] + bx
+    } else if (m[i][j] === m[i][j-1] + 1) { // 插入 a[j]
+      j--
+      ax = a[j] + ax
+      bx = ' '  + bx
+    } else if ((m[i][j] === m[i-1][j-1] + 1) // 取代
+    || (m[i][j] === m[i-1][j-1])) { // 相同
+     i--
+     j--
+     bx = b[i] + bx
+     ax = a[j] + ax
+    } 
+  }
+  while (i> 0) {
+    i--
+    bx = b[i] + bx
+    ax = ' ' + ax
+  }
+  while (j > 0) {
+    j--
+    ax = a[j] + ax
+    bx = ' ' + bx
+  }
+  console.log('bx=', bx)
+  console.log('ax=', ax)
 }
 
 var a, b
-
+/*
 a = "010100001"
 b = "010100010"
 console.log("dist(%s,%s) = %s", a, b, editDistance(a,b))
-
-a = "ATGCAATCCC"
-b = "ATGATCC"
-console.log("dist(%s,%s) = %s", a, b, editDistance(a,b))
+*/
+//b = "ATG  ATCCG"
+a   = "ATGCAATCCC"
+b   = "ATGATCCG"
+//b = "  TCCGAA"
+// a   = "ATCCCAAA"
+// b   = "TCCGAA"
+let e = editDistance(b, a)
+console.log("dist(%s,%s) = %s", b, a, e.d)
+console.log('======m=========\n', e.m)
+align(b, a, e.m)
